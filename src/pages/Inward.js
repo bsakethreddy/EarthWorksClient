@@ -6,15 +6,7 @@ import styles from '../css/Inward.css'
 
 export default function Inward() {
   const [data,setData] = useState([])
-  useEffect(()=>{
-    fetch('http://localhost:5000/getTypes',{
-        
-    }).then(res=>res.json())
-    .then(result=>{
-        console.log(result)
-        setData(result.types)
-    })
- },[])
+  
   const typeProps = {
     options: data,
     getOptionLabel: (option) => option.name,

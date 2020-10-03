@@ -7,6 +7,7 @@ import '../css/outward.css';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import * as initialData from '../initialData';
 import { red } from '@material-ui/core/colors';
+import { ImageSwitchVideo } from 'material-ui/svg-icons';
 
 function AddResource() {
   const [FullName, setFullName] = useState("");
@@ -22,6 +23,31 @@ function AddResource() {
     options: initialData.types,
     getOptionLabel: (option) => option.value,
   };
+  const showFormByType = () =>{
+      console.log("TYPE = " , Type);
+      if(Type == "tool"){
+        return(
+          <div className = "rowStyle">
+           <Select 
+                className ="selectStyle"
+                styles ={{fontsize: "10px"}}
+                placeholder="Transport Options "
+                name="TransportOption"
+                // options={initialData.units}
+                // onChange={(event) => ()}
+            />
+            <Select 
+                className ="selectStyle"
+                styles ={{fontsize: "10px"}}
+                placeholder="Composition Options"
+                name="CompositionOption"
+                // options={initialData.units}
+                // onChange={(event) => ()}
+            />
+          </div>
+        );
+      }
+  }
   return (
     <div className = "outward">
       <form className = 'formStyle'>
@@ -44,71 +70,59 @@ function AddResource() {
             />
           </div>
 
-          <div >
-            <Autocomplete className = "rowStyle"
-              {...typeProps}
-              id="auto-complete"
-              name = "Type"
-              autoComplete
-              includeInputInList
-              onChange={(event) => setType(event.target.value)}
-              renderInput={(params) => <TextField {...params} label="Types" margin ="normal" />}
+          <div>
+              <Select 
+                // className = "selectStyle"
+                placeholder="Type"
+                name="Type"
+                options={initialData.types}
+                onChange={(event) => setType(event.value)}
             />
-            
           </div>
-     
+          {showFormByType()}
           <div className = "rowStyle">
-          <TextField style = {{paddingRight:"2px"}}
-              label="SKU"
-              margin="dense"
-              variant="outlined"
-              onChange={(event) => setSKU(event.target.value)}
-              value={SKU}
+            <TextField style = {{paddingRight:"2px"}}
+                label="SKU"
+                margin="dense"
+                variant="outlined"
+                onChange={(event) => setSKU(event.target.value)}
+                value={SKU}
+              />
+            <TextField
+                name="Quantity"
+                margin="dense"
+                variant="outlined"
+                type = 'number'
+                label ="Quantity"
+                onChange={(event) => setQuantity(event.target.value)}
             />
-          <TextField
-              name="Quantity"
-              margin="dense"
-              variant="outlined"
-              type = 'number'
-              label ="Quantity"
-              onChange={(event) => setQuantity(event.target.value)}
-          />
-          <Select 
-              className ="selectStyle"
-              styles ={{fontsize: "10px"}}
-              placeholder="Units"
-              name="Units"
-              options={initialData.units}
-              // onChange={(event) => ()}
-          />
+            <Select 
+                className ="selectStyle"
+                styles ={{fontsize: "10px"}}
+                placeholder="Units"
+                name="Units"
+                options={initialData.units}
+                // onChange={(event) => ()}
+            />
           </div>
           <div className = "rowStyle">
-          <TextField
-              name="Location "
-              margin="dense"
-              variant="outlined"
-              label ="Location"
-              onChange={(event) => setLocation(event.target.value)}
-          />
-          
-          <Select 
-              className ="selectStyle"
-              styles ={{fontsize: "10px"}}
-              placeholder="Owner"
-              name="Owner"
-              // options={initialData.units}
-              // onChange={(event) => ()}
-          />
+              <TextField
+                  name="Location "
+                  margin="dense"
+                  variant="outlined"
+                  label ="Location"
+                  onChange={(event) => setLocation(event.target.value)}
+              />
+              
+              <Select 
+                  className ="selectStyle"
+                  styles ={{fontsize: "10px"}}
+                  placeholder="Owner"
+                  name="Owner"
+                  // options={initialData.units}
+                  // onChange={(event) => ()}
+              />
             </div>
-          <TextField
-              multiline
-              rows = {3}
-              name="Comment"
-              margin="dense"
-              variant="outlined"
-              label ="Comments"
-              onChange={(event) => setComment(event.target.value)}
-          />
         
           <Button
               value="Save"

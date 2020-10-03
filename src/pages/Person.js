@@ -18,7 +18,7 @@ function Person() {
   const [CurrentLocation, setCurrentLocation] = useState("");
   const [Address, setAddress] = useState("");
 
-
+  
   const jobtitleProps = {
     options: initialData.jobs,
     getOptionLabel: (option) => option.value,
