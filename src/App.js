@@ -7,6 +7,7 @@ import Outward from './pages/Outward';
 import Inward from './pages/Inward';
 import Person from './pages/Person';
 import AddResource from './pages/AddResource';
+import DashBoard from './pages/DashBoard';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path='/inward' component={Inward} />
           <Route path='/addPerson' component={Person} />
           <Route path='/addResource' component={AddResource} />
+          <Route path='/dashBoard' component={DashBoard} />
         </Switch>
       </Router>
     </>

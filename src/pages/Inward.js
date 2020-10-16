@@ -1,64 +1,144 @@
 import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
+import {Link } from 'react-router-dom';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
+import { FormHelperText } from '@material-ui/core';
 import styles from '../css/Inward.css'
+import * as initialData from '../initialData';
+import Select from 'react-select';
 
 export default function Inward() {
-  const [data,setData] = useState([])
-  
-  const typeProps = {
-    options: data,
-    getOptionLabel: (option) => option.name,
-  };
+  const [Resource, setResource] = useState("");
+  const [Person, setPerson] = useState("");
+  const [Comments, setComments] = useState("");
+  const [Organization, setOrganization] = useState("");
+  const [Quantity, setQuantity] = useState();
+  const [Price, setPrice] = useState();
+  const [Date, setDate] = useState();
   // handleSubmit() {
   //   alert('Inward data is added');
   //   // event.preventDefault();
   // }
+  const resourceProps = {
+    options: initialData.resources,
+    getOptionLabel: (option) => option.value,
+  };
+  const organizationProps = {
+    options: initialData.organizations,
+    getOptionLabel: (option) => option.value,
+  };
+  const personProps = {
+    options: initialData.persons,
+    getOptionLabel: (option) => option.value,
+  };
   return (
-    <div style = {{alignItems:"center", display:"flex", justifyContent:"center"}}>
-    <form style={{ paddingLeft:50, width: 300 }} >
-      <Autocomplete
-        {...typeProps}
-        id="auto-complete"
-        autoComplete
-        includeInputInList
-        renderInput={(params) => <TextField {...params} label="Types" margin ="normal" />}
-      />
-     <Autocomplete
-        {...typeProps}
-        id="auto-complete"
-        autoComplete
-        // includeInputInList
-        renderInput={(params) => <TextField {...params} label="Resources" margin="normal" />}
-      />
-      <Autocomplete
-        {...typeProps}
-        id="auto-complete"
-        autoComplete
-        includeInputInList
-        renderInput={(params) => <TextField {...params} label="Location" margin="normal" />}
-      />
-      <Autocomplete
-        {...typeProps}
-        id="auto-select"
-        autoSelect
-        renderInput={(params) => <TextField {...params} label="XXXXX" margin="normal" />}
-      />
-      <div style ={{marginTop:'10px', marginLeft:'35px'}}>
-        <Button size="medium" color = "primary" variant="contained" >
-            Add
-        </Button>
-      </div>
-    </form>
+    <div className = "outward">
+      <form className = 'formStyle'>
+          <h6> Inward</h6>
+          <hr/>
+          <div className = "rowStyle">
+          
+          <Link style={{ textDecoration: "none" }} to = "/addResource">
+          <FormHelperText>Resource not found? Add one and come back!!</FormHelperText>
+            <Button
+                value="Add Resource"
+                color="primary"
+                variant="contained"
+                helperText="Resource not found?"
+              //   onClick={() => this.validateAndSave()}
+            >Add Resource</Button>
+          </Link>
+          <Link style={{ textDecoration: "none" }} to = "/addPerson">
+          <FormHelperText>Source By not found? Add one and come back!!</FormHelperText>
+            <Button
+                value="Save"
+                color="primary"
+                variant="contained"
+              //   onClick={() => this.validateAndSave()}
+            >Add Person</Button>
+          </Link>
+          </div>
+          {/* <div className = "rowStyle"> */}
+          <Autocomplete className = "rowStyle"
+              style = {{padding: "0px", margin: "0px"}}
+              {...resourceProps}
+              id="combo-box-demo"
+              // name = "Person Requested"
+              autoComplete
+              includeInputInList
+              onChange={(event) => setResource(event.target.value)}
+              renderInput={(params) => <TextField {...params} label="Resource" margin ="normal" />}
+            />
+          <Autocomplete className = "rowStyle"
+              style = {{padding: "0px", margin: "0px"}}
+              {...personProps}
+              id="combo-box-demo"
+              // name = "Person Requested"
+              autoComplete
+              includeInputInList
+              onChange={(event) => setPerson(event.target.value)}
+              renderInput={(params) => <TextField {...params} label="Sourced By" margin ="normal" />}
+            />
+            {/* </div> */}
+          <Autocomplete className = "rowStyle"
+              style = {{padding: "0px", margin: "0px"}}
+              {...organizationProps}
+              id="combo-box-demo"
+              // name = "Person Requested"
+              autoComplete
+              includeInputInList
+              onChange={(event) => setOrganization(event.target.value)}
+              renderInput={(params) => <TextField {...params} label="Organization" margin ="normal" />}
+            />
+            
+            <div className = "rowStyle">
+            <TextField 
+                name="Quantity"
+                margin="dense"
+                variant="outlined"
+                type = 'number'
+                label ="Quantity"
+                onChange={(event) => setQuantity(event.target.value)}
+            />
+              <TextField style = {{paddingLeft : "5px", paddingRight: "5px"}}
+                  name="Price"
+                  margin="dense"
+                  variant="outlined"
+                  type = 'number'
+                  label ="Price"
+                  onChange={(event) => setPrice(event.target.value)}
+              />
+              <TextField
+                  type = "date"
+                  name="Date"
+                  margin="dense"
+                  variant="outlined"
+                  // label ="Date"
+                  onChange={(event) => setDate(event.target.value)}
+              />
+            </div>
+            <TextField className = "rowStyle"
+              multiline
+              rows = {3}
+              name="Comments"
+              margin="dense"
+              variant="outlined"
+              label ="Comments"
+              onChange={(event) => setComments(event.target.value)}
+            />
+          <Button className = "rowStyle"
+              value="Save"
+              color="primary"
+              variant="contained"
+            //   onClick={() => this.validateAndSave()}
+          >Save</Button>
+          
+      </form>
     </div>
   );
 }
 
 
-const types = [
-  {type : 'Consumable'},
-  {type: 'non-consumable'}
-];
 
-// export default CustomSelect;
+

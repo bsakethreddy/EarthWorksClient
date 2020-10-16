@@ -35,3 +35,13 @@ export const jobs = [
     { 'value': 'engineer', 'label': 'ENGINEER' },
     { 'value': 'architect', 'label': 'ARCHITECT' },
 ];
+export const resources = [
+
+];
+export const organizations = [
+
+];
+export const persons = [
+
+];
+

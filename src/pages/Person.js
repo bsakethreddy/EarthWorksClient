@@ -23,6 +23,15 @@ function Person() {
     options: initialData.jobs,
     getOptionLabel: (option) => option.value,
   };
+
+  const validateAndSave = () => {
+    fetch('http://localhost:3000/addPerson', {
+      method: 'POST',
+      body: JSON.stringify({FirstName, LastName, JobTitle, Phone, Email, Organization, CurrentLocation, Address})
+    }).then(() => alert("Person Saved Successfully"))
+    .catch(() => alert("There was a error, Please try again"))
+  };
+  
   return (
     <div className = "outward">
       <form className = 'formStyle'>

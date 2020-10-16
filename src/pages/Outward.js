@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import Select from 'react-select';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -9,17 +9,27 @@ import * as initialData from '../initialData';
 import { red } from '@material-ui/core/colors';
 
 function AddResource() {
-  const [Resource, setResource] = useState();
+  const [Resource, setResource] = useState("");
+  const [AllResources, setAllResources] = useState([]);
   const [Quantity, setQuantity] = useState("");
   const [PersonRequested, setPersonRequested] = useState("");
-  const [PersonRecieved, setPersonRecieved] = useState("");
-  const [Location, setLocation] = useState("");
-
+  const [Transporter, setTransporter] = useState("");
+  const [ToLocation, setToLocation] = useState("");
+  const [Comments, setComments] = useState("");
 
   const typeProps = {
     options: initialData.types,
     getOptionLabel: (option) => option.value,
   };
+  useEffect(()=>{
+    fetch('http://localhost:5000/getAllResources',{
+    }).then(res=>res.json())
+    .then(result=>{
+        setAllResources(result.resources)
+        console.log(result.resources)
+    })
+  },[])
+
   return (
     <div className = "outward">
       <form className = 'formStyle'>
@@ -36,21 +46,24 @@ function AddResource() {
           />
           </div>
      
-          <div className = "rowStyle">
-          <TextField 
-              label="Person Requested"
-              margin="dense"
-              variant="outlined"
+          <div >
+          <Autocomplete className = "rowStyle"
+              // {...typeProps}
+              id="auto-complete"
+              // name = "Person Requested"
+              autoComplete
+              includeInputInList
               onChange={(event) => setPersonRequested(event.target.value)}
-              value={PersonRequested}
+              renderInput={(params) => <TextField {...params} label="Person Requested" margin ="normal" />}
             />
-          
-          <TextField
-              label="Person Recieved"
-              margin="dense"
-              variant="outlined"
-              onChange={(event) => setPersonRecieved(event.target.value)}
-              value={PersonRecieved}
+          <Autocomplete className = "rowStyle"
+              // {...typeProps}
+              id="auto-complete"
+              // name = "Person Requested"
+              autoComplete
+              includeInputInList
+              onChange={(event) => setPersonRequested(event.target.value)}
+              renderInput={(params) => <TextField {...params} label="Transporter" margin ="normal" />}
             />
           </div>
           <div className = "rowStyle">
@@ -63,14 +76,22 @@ function AddResource() {
               onChange={(event) => setQuantity(event.target.value)}
           />
           <TextField
-              name="Location "
+              name="ToLocation "
               margin="dense"
               variant="outlined"
-              label ="Location"
-              onChange={(event) => setLocation(event.target.value)}
+              label ="To Location"
+              onChange={(event) => setToLocation(event.target.value)}
           />
             </div>
-        
+          <TextField
+              multiline
+              rows = {3}
+              name="Comments"
+              margin="dense"
+              variant="outlined"
+              label ="Comments"
+              onChange={(event) => setComments(event.target.value)}
+          />
           <Button
               value="Save"
               color="primary"

@@ -23,31 +23,14 @@ function AddResource() {
     options: initialData.types,
     getOptionLabel: (option) => option.value,
   };
-  const showFormByType = () =>{
-      console.log("TYPE = " , Type);
-      if(Type == "tool"){
-        return(
-          <div className = "rowStyle">
-           <Select 
-                className ="selectStyle"
-                styles ={{fontsize: "10px"}}
-                placeholder="Transport Options "
-                name="TransportOption"
-                // options={initialData.units}
-                // onChange={(event) => ()}
-            />
-            <Select 
-                className ="selectStyle"
-                styles ={{fontsize: "10px"}}
-                placeholder="Composition Options"
-                name="CompositionOption"
-                // options={initialData.units}
-                // onChange={(event) => ()}
-            />
-          </div>
-        );
-      }
-  }
+
+  const validateAndSave = () => {
+    fetch('http://localhost:3000/addResource', {
+      method: 'POST',
+      body: JSON.stringify({FullName, NickName, SKU, Type, Quantity, Location, Comment})
+    }).then(() => alert("Resource Saved Successfully"))
+    .catch(() => alert("There was a error, Please try again"))
+  };
   return (
     <div className = "outward">
       <form className = 'formStyle'>
@@ -71,15 +54,16 @@ function AddResource() {
           </div>
 
           <div>
-              <Select 
-                // className = "selectStyle"
-                placeholder="Type"
-                name="Type"
-                options={initialData.types}
-                onChange={(event) => setType(event.value)}
+            <Autocomplete className = "rowStyle"
+              {...typeProps}
+              id="auto-complete"
+              name = "Type"
+              autoComplete
+              includeInputInList
+              onChange={(event) => setType(event.target.value)}
+              renderInput={(params) => <TextField {...params} label="Type" margin ="normal" />}
             />
           </div>
-          {showFormByType()}
           <div className = "rowStyle">
             <TextField style = {{paddingRight:"2px"}}
                 label="SKU"
