@@ -16,12 +16,18 @@ export default function Inward() {
   const [Quantity, setQuantity] = useState();
   const [Price, setPrice] = useState();
   const [Date, setDate] = useState();
-  // handleSubmit() {
-  //   alert('Inward data is added');
-  //   // event.preventDefault();
-  // }
+  const [AllResources, setAllResources] = useState([]);
+  
+  useEffect(()=>{
+    fetch('http://localhost:5000/getResources',{
+    }).then(res=>res.json())
+    .then(result=>{
+        setAllResources(result)
+    })
+  },[])
+
   const resourceProps = {
-    options: initialData.resources,
+    options: initialData.AllResources,
     getOptionLabel: (option) => option.value,
   };
   const organizationProps = {
@@ -33,6 +39,13 @@ export default function Inward() {
     getOptionLabel: (option) => option.value,
   };
   
+  const validateAndSave = () => {
+    fetch('http://localhost:5000/addInward', {
+      method: 'POST',
+      body: JSON.stringify({Resource, Person, Organization, Price, Quantity, Comments, Date})
+    }).then(() => alert("Resource Saved Successfully"))
+    .catch(() => alert("There was a error, Please try again"))
+  };
   return (
     <div className = "outward">
       <form className = 'formStyle'>
@@ -132,7 +145,7 @@ export default function Inward() {
               value="Save"
               color="primary"
               variant="contained"
-               onClick={() => this.validateAndSave()}
+               onClick={() => validateAndSave()}
           >Save</Button>
           
       </form>

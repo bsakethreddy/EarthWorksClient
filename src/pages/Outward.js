@@ -28,7 +28,15 @@ function AddResource() {
         setAllResources(result.resources)
         console.log(result.resources)
     })
-  },[])
+  },[]);
+
+  const validateAndSave = () => {
+    fetch('http://localhost:5000/addOutward', {
+      method: 'POST',
+      body: JSON.stringify({Resource, PersonRequested, Transporter, ToLocation, Quantity, Comments})
+    }).then(() => alert("Outward Saved Successfully"))
+    .catch(() => alert("There was a error, Please try again"))
+  };
 
   return (
     <div className = "outward">

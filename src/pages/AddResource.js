@@ -38,7 +38,7 @@ function AddResource() {
   },[])
 
   const validateAndSave = () => {
-    fetch('http://localhost:3000/addResource', {
+    fetch('http://localhost:5000/addResource', {
       method: 'POST',
       body: JSON.stringify({FullName, NickName, SKU, Type, Quantity, Location, Comment, Owner})
     }).then(() => alert("Resource Saved Successfully"))
