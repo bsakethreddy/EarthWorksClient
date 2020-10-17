@@ -58,16 +58,14 @@ function AddResource() {
                   options={AllOwners}
                   onChange={(event) => setOwner(event.target.value)}
               />
-              <Link style={{ textDecoration: "none" }} to = "/addPerson">
+            <Link style={{ textDecoration: "none" }} to = "/addPerson">
               <Button
                 value="Save"
                 color="primary"
                 variant="contained"
-              //   onClick={() => this.validateAndSave()}
             >Add Person</Button>
-          <FormHelperText>Owner not found? Add one and come back!!</FormHelperText>
-           
-          </Link>
+              <FormHelperText>Owner not found? Add one and come back!!</FormHelperText>
+            </Link>
           </div>
           <div className = "rowStyle">
             <TextField 

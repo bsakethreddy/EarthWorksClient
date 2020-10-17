@@ -22,13 +22,14 @@ export default function Inward() {
     fetch('http://localhost:5000/getResources',{
     }).then(res=>res.json())
     .then(result=>{
-        setAllResources(result)
+        const resources = result.map(r => r.uniqueId)
+        setAllResources(resources)
     })
   },[])
 
   const resourceProps = {
-    options: initialData.AllResources,
-    getOptionLabel: (option) => option.value,
+    options: AllResources,
+    getOptionLabel: (option) => option.uniqueId,
   };
   const organizationProps = {
     options: initialData.organizations,
