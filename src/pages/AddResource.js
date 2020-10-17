@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import Select from 'react-select';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -8,6 +8,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import * as initialData from '../initialData';
 import { red } from '@material-ui/core/colors';
 import { ImageSwitchVideo } from 'material-ui/svg-icons';
+import {Link } from 'react-router-dom';
+import { FormHelperText } from '@material-ui/core';
 
 function AddResource() {
   const [FullName, setFullName] = useState("");
@@ -17,17 +19,28 @@ function AddResource() {
   const [Quantity, setQuantity] = useState();
   const [Location, setLocation] = useState("");
   const [Comment, setComment] = useState("");
-
+  const [AllOwners, setAllOwners] = useState([]);
+  const [Owner, setOwner] = useState("");
 
   const typeProps = {
     options: initialData.types,
     getOptionLabel: (option) => option.value,
   };
+  useEffect(()=>{
+    console.log(initialData.units)
+    fetch('http://localhost:5000/getOwners',{
+    }).then(res=>res.json())
+    .then(result=>{
+        setAllOwners(result.owner)
+        console.log(result.owner)
+        
+    })
+  },[])
 
   const validateAndSave = () => {
     fetch('http://localhost:3000/addResource', {
       method: 'POST',
-      body: JSON.stringify({FullName, NickName, SKU, Type, Quantity, Location, Comment})
+      body: JSON.stringify({FullName, NickName, SKU, Type, Quantity, Location, Comment, Owner})
     }).then(() => alert("Resource Saved Successfully"))
     .catch(() => alert("There was a error, Please try again"))
   };
@@ -36,6 +49,26 @@ function AddResource() {
       <form className = 'formStyle'>
           <h6> Add Resource</h6>
           <hr/>
+          <div className="rowStyle">
+          <Select 
+                  className ="selectStyle"
+                  styles ={{fontsize: "10px"}}
+                  placeholder="Owner"
+                  name="Owner"
+                  options={AllOwners}
+                  onChange={(event) => setOwner(event.target.value)}
+              />
+              <Link style={{ textDecoration: "none" }} to = "/addPerson">
+              <Button
+                value="Save"
+                color="primary"
+                variant="contained"
+              //   onClick={() => this.validateAndSave()}
+            >Add Person</Button>
+          <FormHelperText>Owner not found? Add one and come back!!</FormHelperText>
+           
+          </Link>
+          </div>
           <div className = "rowStyle">
             <TextField 
               label="Full Name"
@@ -97,22 +130,13 @@ function AddResource() {
                   label ="Location"
                   onChange={(event) => setLocation(event.target.value)}
               />
-              
-              <Select 
-                  className ="selectStyle"
-                  styles ={{fontsize: "10px"}}
-                  placeholder="Owner"
-                  name="Owner"
-                  // options={initialData.units}
-                  // onChange={(event) => ()}
-              />
             </div>
         
           <Button
               value="Save"
               color="primary"
               variant="contained"
-              onClick={() => this.validateAndSave()}
+              onClick={() => validateAndSave()}
           >Save</Button>
           
       </form>

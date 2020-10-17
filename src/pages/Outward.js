@@ -96,7 +96,7 @@ function AddResource() {
               value="Save"
               color="primary"
               variant="contained"
-            //   onClick={() => this.validateAndSave()}
+              //onClick={() => validateAndSave()}
           >Save</Button>
           
       </form>

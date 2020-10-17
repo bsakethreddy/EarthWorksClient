@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import Select from 'react-select';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -17,18 +17,32 @@ function Person() {
   const [Organization, setOrganization] = useState("");
   const [CurrentLocation, setCurrentLocation] = useState("");
   const [Address, setAddress] = useState("");
+  const [AllOrganizations, setAllOrganizations] = useState([]);
 
-  
+  useEffect(()=>{
+    fetch('http://localhost:5000/getOrganizations',{
+    }).then(res=>res.json())
+    .then(result=>{
+      var x = []
+        for(var i in result.orgs){
+            x.push({"label": result.orgs[i].name})
+        }
+        setAllOrganizations(x)
+        console.log(x)
+        
+    })
+  },[])
   const jobtitleProps = {
     options: initialData.jobs,
     getOptionLabel: (option) => option.value,
   };
 
   const validateAndSave = () => {
-    fetch('http://localhost:3000/addPerson', {
+    fetch('http://localhost:5000/addPerson', {
       method: 'POST',
       body: JSON.stringify({FirstName, LastName, JobTitle, Phone, Email, Organization, CurrentLocation, Address})
-    }).then(() => alert("Person Saved Successfully"))
+    })
+    .then(res=>console.log(res.json))
     .catch(() => alert("There was a error, Please try again"))
   };
   
@@ -98,8 +112,8 @@ function Person() {
               styles ={{fontsize: "10px"}}
               placeholder="Organization"
               name="Organization"
-              // options={initialData.units}
-              // onChange={(event) => ()}
+              options={AllOrganizations}
+              onClick={(event) => setOrganization(event.target.value)}
           />
             </div>
           <TextField
@@ -116,7 +130,7 @@ function Person() {
               value="Save"
               color="primary"
               variant="contained"
-              onClick={() => this.validateAndSave()}
+              onClick={() => validateAndSave()}
           >Save</Button>
           
       </form>

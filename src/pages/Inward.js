@@ -32,6 +32,7 @@ export default function Inward() {
     options: initialData.persons,
     getOptionLabel: (option) => option.value,
   };
+  
   return (
     <div className = "outward">
       <form className = 'formStyle'>
@@ -131,7 +132,7 @@ export default function Inward() {
               value="Save"
               color="primary"
               variant="contained"
-            //   onClick={() => this.validateAndSave()}
+               onClick={() => this.validateAndSave()}
           >Save</Button>
           
       </form>
