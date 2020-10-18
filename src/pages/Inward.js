@@ -17,34 +17,42 @@ export default function Inward() {
   const [Price, setPrice] = useState();
   const [Date, setDate] = useState();
   const [AllResources, setAllResources] = useState([]);
+  const [AllPersons, setAllPersons] = useState([]);
   
   useEffect(()=>{
-    fetch('http://localhost:5000/getResources',{
+    fetch('http://localhost:5000/getAllResources',{
     }).then(res=>res.json())
     .then(result=>{
-        const resources = result.map(r => r.uniqueId)
-        setAllResources(resources)
+        setAllResources(result.resources)
+    })
+  },[])
+
+  useEffect(()=>{
+    fetch('http://localhost:5000/getAllPersons',{
+    }).then(res=>res.json())
+    .then(result=>{
+        setAllPersons(result.persons)
     })
   },[])
 
   const resourceProps = {
     options: AllResources,
-    getOptionLabel: (option) => option.uniqueId,
+    getOptionLabel: (option) => option.identifier,
   };
   const organizationProps = {
     options: initialData.organizations,
     getOptionLabel: (option) => option.value,
   };
   const personProps = {
-    options: initialData.persons,
-    getOptionLabel: (option) => option.value,
+    options: AllPersons,
+    getOptionLabel: (option) => option.first_name + " "+ option.last_name,
   };
   
   const validateAndSave = () => {
     fetch('http://localhost:5000/addInward', {
       method: 'POST',
       body: JSON.stringify({Resource, Person, Organization, Price, Quantity, Comments, Date})
-    }).then(() => alert("Resource Saved Successfully"))
+    }).then(() => alert("Inward Saved Successfully"))
     .catch(() => alert("There was a error, Please try again"))
   };
   return (

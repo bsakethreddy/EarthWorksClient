@@ -18,7 +18,7 @@ function AddResource() {
   const [Type, setType] = useState("");
   const [Quantity, setQuantity] = useState();
   const [Location, setLocation] = useState("");
-  const [Comment, setComment] = useState("");
+  // const [Comment, setComment] = useState("");
   const [AllOwners, setAllOwners] = useState([]);
   const [Owner, setOwner] = useState("");
 
@@ -40,7 +40,8 @@ function AddResource() {
   const validateAndSave = () => {
     fetch('http://localhost:5000/addResource', {
       method: 'POST',
-      body: JSON.stringify({FullName, NickName, SKU, Type, Quantity, Location, Comment, Owner})
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({FullName, NickName, SKU, Type, Quantity, Location, Owner})
     }).then(() => alert("Resource Saved Successfully"))
     .catch(() => alert("There was a error, Please try again"))
   };

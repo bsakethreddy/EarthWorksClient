@@ -40,7 +40,7 @@ function Person() {
     fetch('http://localhost:5000/addPerson', {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({FirstName: FirstName, LastName: LastName, JobTitle: JobTitle, Phone: Phone, Email: Email, Organization: Organization, CurrentLocation: CurrentLocation, Address : Address})
+      body: JSON.stringify({FirstName, LastName, JobTitle, Phone, Email, Organization, CurrentLocation, Address})
     })
     .then(() => alert("Person Successfully Added"))
     .catch(() => alert("There was a error, Please try again"))
@@ -75,7 +75,7 @@ function Person() {
               name = "JobTitle"
               autoComplete
               includeInputInList
-              onChange={(event) => setJobTitle(event.target.value)}
+              onChange={(event, value) => setJobTitle(value.value)}
               renderInput={(params) => <TextField {...params} label="Job Title" margin ="normal" />}
             />
             
@@ -112,8 +112,9 @@ function Person() {
               styles ={{fontsize: "10px"}}
               placeholder="Organization"
               name="Organization"
+              // defaultValue = {Organization}
               options={AllOrganizations}
-              onClick={(event) => setOrganization(event.target.value)}
+              onChange={(event) => setOrganization(event.label)}
           />
             </div>
           <TextField
