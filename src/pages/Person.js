@@ -29,7 +29,6 @@ function Person() {
         }
         setAllOrganizations(x)
         console.log(x)
-        
     })
   },[])
   const jobtitleProps = {
@@ -40,9 +39,10 @@ function Person() {
   const validateAndSave = () => {
     fetch('http://localhost:5000/addPerson', {
       method: 'POST',
-      body: JSON.stringify({FirstName, LastName, JobTitle, Phone, Email, Organization, CurrentLocation, Address})
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({FirstName: FirstName, LastName: LastName, JobTitle: JobTitle, Phone: Phone, Email: Email, Organization: Organization, CurrentLocation: CurrentLocation, Address : Address})
     })
-    .then(res=>console.log(res.json))
+    .then(() => alert("Person Successfully Added"))
     .catch(() => alert("There was a error, Please try again"))
   };
   
