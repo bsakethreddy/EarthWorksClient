@@ -18,7 +18,10 @@ export default function Inward() {
   const [Date, setDate] = useState();
   const [AllResources, setAllResources] = useState([]);
   const [AllPersons, setAllPersons] = useState([]);
+  const [AllOrganizations, setAllOrganizations] = useState([]);
   
+
+
   useEffect(()=>{
     fetch('http://localhost:5000/getAllResources',{
     }).then(res=>res.json())
@@ -51,6 +54,7 @@ export default function Inward() {
   const validateAndSave = () => {
     fetch('http://localhost:5000/addInward', {
       method: 'POST',
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({Resource, Person, Organization, Price, Quantity, Comments, Date})
     }).then(() => alert("Inward Saved Successfully"))
     .catch(() => alert("There was a error, Please try again"))
@@ -90,7 +94,7 @@ export default function Inward() {
               // name = "Person Requested"
               autoComplete
               includeInputInList
-              onChange={(event) => setResource(event.target.value)}
+              onChange={(event, value) => setResource(value.identifier)}
               renderInput={(params) => <TextField {...params} label="Resource" margin ="normal" />}
             />
           <Autocomplete className = "rowStyle"
@@ -100,20 +104,20 @@ export default function Inward() {
               // name = "Person Requested"
               autoComplete
               includeInputInList
-              onChange={(event) => setPerson(event.target.value)}
+              onChange={(event, value) => setPerson(value.value)}
               renderInput={(params) => <TextField {...params} label="Sourced By" margin ="normal" />}
             />
             {/* </div> */}
-          <Autocomplete className = "rowStyle"
+          {/* <Autocomplete className = "rowStyle"
               style = {{padding: "0px", margin: "0px"}}
               {...organizationProps}
               id="combo-box-demo"
               // name = "Person Requested"
               autoComplete
               includeInputInList
-              onChange={(event) => setOrganization(event.target.value)}
+              onChange={(event, value) => setOrganization(value.value)}
               renderInput={(params) => <TextField {...params} label="Organization" margin ="normal" />}
-            />
+            /> */}
             
             <div className = "rowStyle">
             <TextField 

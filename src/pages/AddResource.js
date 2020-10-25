@@ -28,11 +28,15 @@ function AddResource() {
   };
   useEffect(()=>{
     console.log(initialData.units)
-    fetch('http://localhost:5000/getOwners',{
+    fetch('http://localhost:5000/getAllPersons',{
     }).then(res=>res.json())
     .then(result=>{
-        setAllOwners(result.owner)
-        console.log(result.owner)
+      var x = []
+        for(var i in result.persons){
+            x.push({"label": result.persons[i].first_name +" " + result.persons[i].last_name})
+        }
+        setAllOwners(x)
+        console.log(x)
         
     })
   },[])
@@ -50,24 +54,7 @@ function AddResource() {
       <form className = 'formStyle'>
           <h6> Add Resource</h6>
           <hr/>
-          <div className="rowStyle">
-          <Select 
-                  className ="selectStyle"
-                  styles ={{fontsize: "10px"}}
-                  placeholder="Owner"
-                  name="Owner"
-                  options={AllOwners}
-                  onChange={(event) => setOwner(event.target.value)}
-              />
-            <Link style={{ textDecoration: "none" }} to = "/addPerson">
-              <Button
-                value="Save"
-                color="primary"
-                variant="contained"
-            >Add Person</Button>
-              <FormHelperText>Owner not found? Add one and come back!!</FormHelperText>
-            </Link>
-          </div>
+          
           <div className = "rowStyle">
             <TextField 
               label="Full Name"
@@ -129,6 +116,27 @@ function AddResource() {
                   label ="Location"
                   onChange={(event) => setLocation(event.target.value)}
               />
+            </div>
+            <div className = "rowStyle">
+              <Select 
+                  className ="selectStyle"
+                  styles ={{fontsize: "10px"}}
+                  placeholder="Owner"
+                  name="Owner"
+                  options={AllOwners}
+                  onChange={(event) => setOwner(event.label)}
+              />
+              
+            
+
+            <Link style={{ textDecoration: "none" }} to = "/addPerson">
+              <Button
+                value="Save"
+                color="primary"
+                variant="contained"
+            >Add Person</Button>
+              <FormHelperText>Owner not found? Add one and come back!!</FormHelperText>
+            </Link>
             </div>
         
           <Button

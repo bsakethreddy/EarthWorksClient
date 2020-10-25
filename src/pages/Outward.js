@@ -16,25 +16,39 @@ function AddResource() {
   const [Transporter, setTransporter] = useState("");
   const [ToLocation, setToLocation] = useState("");
   const [Comments, setComments] = useState("");
+  const [AllPersons, setAllPersons] = useState([]);
 
-  const typeProps = {
-    options: initialData.types,
-    getOptionLabel: (option) => option.value,
-  };
   useEffect(()=>{
     fetch('http://localhost:5000/getAllResources',{
     }).then(res=>res.json())
     .then(result=>{
         setAllResources(result.resources)
-        console.log(result.resources)
     })
   },[]);
 
+  const resourceProps = {
+    options: AllResources,
+    getOptionLabel: (option) => option.identifier,
+  };
+  useEffect(()=>{
+    fetch('http://localhost:5000/getAllPersons',{
+    }).then(res=>res.json())
+    .then(result=>{
+        setAllPersons(result.persons)
+    })
+  },[])
+  const personProps = {
+    options: AllPersons,
+    getOptionLabel: (option) => option.first_name + " "+ option.last_name,
+  };
   const validateAndSave = () => {
     fetch('http://localhost:5000/addOutward', {
       method: 'POST',
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({Resource, PersonRequested, Transporter, ToLocation, Quantity, Comments})
-    }).then(() => alert("Outward Saved Successfully"))
+    }).then((res) => {
+      res.json().then(x => alert( x.message));
+    })
     .catch(() => alert("There was a error, Please try again"))
   };
 
@@ -43,34 +57,32 @@ function AddResource() {
       <form className = 'formStyle'>
           <h6> Outward</h6>
           <hr/>
-          <div className = "rowStyle">
-          <Select
-              className ="selectStyle"
-              styles ={{fontsize: "10px"}}
-              placeholder="Resource"
-              name="Resource"
-              // options={initialData.units}
-              // onChange={(event) => ()}
-          />
-          </div>
      
           <div >
           <Autocomplete className = "rowStyle"
-              // {...typeProps}
+              {...resourceProps}
+              id="combo-box-demo"
+              autoComplete
+              includeInputInList
+              onChange={(event, value) => setResource( value ? value.identifier :  "")}
+              renderInput={(params) => <TextField {...params} label="Resource" margin ="normal" />}
+            />
+          <Autocomplete className = "rowStyle"
+              {...personProps}
               id="auto-complete"
               // name = "Person Requested"
               autoComplete
               includeInputInList
-              onChange={(event) => setPersonRequested(event.target.value)}
+              onChange={(event, value) => setPersonRequested(value.value)}
               renderInput={(params) => <TextField {...params} label="Person Requested" margin ="normal" />}
             />
           <Autocomplete className = "rowStyle"
-              // {...typeProps}
+              {...personProps}
               id="auto-complete"
               // name = "Person Requested"
               autoComplete
               includeInputInList
-              onChange={(event) => setPersonRequested(event.target.value)}
+              onChange={(event, value) => setPersonRequested(value.value)}
               renderInput={(params) => <TextField {...params} label="Transporter" margin ="normal" />}
             />
           </div>
@@ -104,7 +116,7 @@ function AddResource() {
               value="Save"
               color="primary"
               variant="contained"
-              //onClick={() => validateAndSave()}
+              onClick={() => validateAndSave()}
           >Save</Button>
           
       </form>

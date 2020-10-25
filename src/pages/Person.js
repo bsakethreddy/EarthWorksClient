@@ -35,6 +35,16 @@ function Person() {
     options: initialData.jobs,
     getOptionLabel: (option) => option.value,
   };
+  const clearState = () => {
+    setAddress("");
+    setCurrentLocation("");
+    setEmail("");
+    setFirstName("");
+    setJobTitle("");
+    setLastName("");
+    setOrganization("");
+    setPhone("");
+  }
 
   const validateAndSave = () => {
     fetch('http://localhost:5000/addPerson', {
@@ -42,7 +52,10 @@ function Person() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({FirstName, LastName, JobTitle, Phone, Email, Organization, CurrentLocation, Address})
     })
-    .then(() => alert("Person Successfully Added"))
+    .then(() => {
+      alert("Person Successfully Added");
+      clearState();
+    })
     .catch(() => alert("There was a error, Please try again"))
   };
   
@@ -96,6 +109,7 @@ function Person() {
               variant="outlined"
               label ="Email"
               onChange={(event) => setEmail(event.target.value)}
+              value = {Email}
           />
           </div>
           <div className = "rowStyle">
@@ -105,6 +119,7 @@ function Person() {
               variant="outlined"
               label ="Location"
               onChange={(event) => setCurrentLocation(event.target.value)}
+              value = {CurrentLocation}
           />
           
           <Select 
@@ -112,7 +127,7 @@ function Person() {
               styles ={{fontsize: "10px"}}
               placeholder="Organization"
               name="Organization"
-              // defaultValue = {Organization}
+              defaultValue = {Organization}
               options={AllOrganizations}
               onChange={(event) => setOrganization(event.label)}
           />
@@ -125,6 +140,7 @@ function Person() {
               variant="outlined"
               label ="Address"
               onChange={(event) => setAddress(event.target.value)}
+              value = {Address}
           />
         
           <Button
