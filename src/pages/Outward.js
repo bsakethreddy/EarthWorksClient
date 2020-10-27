@@ -73,7 +73,7 @@ function AddResource() {
               // name = "Person Requested"
               autoComplete
               includeInputInList
-              onChange={(event, value) => setPersonRequested(value.value)}
+              onChange={(event, value) => setPersonRequested( value ? value.first_name :  "")}
               renderInput={(params) => <TextField {...params} label="Person Requested" margin ="normal" />}
             />
           <Autocomplete className = "rowStyle"
@@ -82,7 +82,7 @@ function AddResource() {
               // name = "Person Requested"
               autoComplete
               includeInputInList
-              onChange={(event, value) => setPersonRequested(value.value)}
+              onChange={(event, value) => setTransporter( value ? value.first_name :  "")}
               renderInput={(params) => <TextField {...params} label="Transporter" margin ="normal" />}
             />
           </div>
