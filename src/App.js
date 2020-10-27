@@ -15,7 +15,7 @@ function App() {
       <Router>
         <Navbar />
         <Switch>
-          <Route path='/' exact component={HomeScreen} />
+          <Route path='/' exact component={Home} />
           <Route path='/outward' component={Outward} />
           <Route path='/inward' component={Inward} />
           <Route path='/addPerson' component={Person} />
